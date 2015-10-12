@@ -1,0 +1,91 @@
+doctype html
+html[lang="en"]
+  head
+    meta[charset="utf-8"]
+    meta[http-equiv="X-UA-Compatible" content="IE=edge"]
+    meta[name="viewport" content="width=device-width, initial-scale=1"]
+    meta[name="description" content=""]
+    meta[name="author" content=""]
+    link[rel="shortcut icon" href="../../assets/ico/favicon.ico"]
+    title
+      | Docker Panel
+    link[href="bootstrap/css/template.css" rel="stylesheet"]
+  body
+    .navbar.navbar-inverse.navbar-fixed-top[role="navigation"]
+      .container
+        .navbar-header
+          button.navbar-toggle[type="button" data-toggle="collapse" data-target=".navbar-collapse"]
+            span.sr-only
+              | Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand[href="#"]
+            | Docker Panel
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li.active
+              a[href="#"]
+                | Home
+    .container
+      .header
+        h1
+          | Docker Panel
+        p.lead
+          | 起動中のDockerコンテナを一覧表示しています。
+          br
+          | イメージを選択して起動したり、停止させられます。
+      .pull-right
+        p
+          | 作成するコンテナを選択
+        form.form-inline[method="POST" action="/start" role="form"]
+          select.form-control[name="image"]
+            - @images.each do |image|
+              option
+                = image[0]
+          button.btn.btn-primary[type="submit"]
+            | Start
+      .vm-list
+        table.table.table-hover
+          thead
+            tr
+              th
+                | PID
+              th
+                | Image
+              th
+                | Command
+              th
+                | Port
+              th
+                | URL
+              th
+                | Stop
+          tbody
+            - @container.each do |c|
+              tr
+                - data = c.json
+                td
+                  = data['State']['Pid']
+                td
+                  = data['Config']['Image']
+                td
+                  = data['Config']['Cmd'].join(' ')
+                - port = data['NetworkSettings']['Ports'].first[1][0]['HostPort']
+                td
+                  = port
+                td
+                  - if data['Config']['ExposedPorts'].first[0].split('/')[0] == '80'
+                    |  <a href="http://192.168.56.101:
+                    = port
+                    | " target="_blank">http://192.168.56.101:
+                    = port
+            td
+              form[method="POST" action="/stop" role="form"]
+                |  <input type="hidden" name="id" value="
+                = data['ID']
+                | " />
+                button.btn.btn-danger[type="submit"]
+                  | Stop
+    script[src="bootstrap/jquery-1.11.0.min.js"]
+    script[src="bootstrap/js/bootstrap.min.js"]
