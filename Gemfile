@@ -5,3 +5,4 @@ gem 'sinatra'
 gem 'docker-api'
 gem 'html2slim'
 
+gem 'slim'

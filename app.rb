@@ -1,6 +1,5 @@
 require 'docker'
 require 'sinatra'
-require "sinatra/reloader" if development?
 require 'slim'
 
 IMAGES = {
@@ -9,7 +8,7 @@ IMAGES = {
 }
 ENV['DOCKER_URL'] = 'tcp://localhost:4243'
 
-get / do
+get '/' do
   @container = Docker::container.all.reverse
   slim :index
 end
