@@ -7,6 +7,9 @@ GEM
     excon (0.45.4)
     foreman (0.78.0)
       thor (~> 0.19.1)
+    hpricot (0.8.6)
+    html2slim (0.2.0)
+      hpricot
     json (1.8.3)
     rack (1.6.4)
     rack-protection (1.5.3)
@@ -24,6 +27,7 @@ PLATFORMS
 DEPENDENCIES
   docker-api
   foreman
+  html2slim
   sinatra
 
 BUNDLED WITH
